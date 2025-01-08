@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Progress Bar</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #00a9d9 0%, 
+                #00a9d9 var(--progress, 0%), 
+                #a84444 var(--progress, 0%), 
+                #d3d3d3 100%
+            );
+            mask: radial-gradient(circle, transparent 60%, black 61%);
+            -webkit-mask: radial-gradient(circle, transparent 60%, black 61%);
+        }
+
+        .circular-progress .value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            color: #d90e00;
+            z-index: 1;
+        }
+
+        .slider {
+            margin-left: 20px;
+            transform: rotate(-90deg);
+            width: 150px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 150px;
+            height: 10px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.9;
+            border-radius: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #00a9d9;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #00a9d9;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Circular Progress Bar -->
+        <div class="circular-progress" id="progressBar">
+            <div class="value" id="progressValue">0</div>
+        </div>
+
+        <!-- Vertical Slider -->
+        <input
+            class="slider"
+            id="progressSlider"
+            type="range"
+            min="0"
+            max="255"
+            value="0"
+        />
+    </div>
+
+    <script>
+        const slider = document.getElementById('progressSlider');
+        const progressBar = document.getElementById('progressBar');
+        const progressValue = document.getElementById('progressValue');
+
+        slider.addEventListener('input', () => {
+            const value = slider.value; // Get the slider value (0-255)
+            const percentage = Math.round((value / 255) * 100); // Convert to percentage
+
+            // Update the circular progress bar
+            progressBar.style.setProperty('--progress', `${percentage}%`);
+
+            // Update the value in the middle of the progress bar
+            progressValue.textContent = value;
+        });
+    </script>
+</body>
+</html>
